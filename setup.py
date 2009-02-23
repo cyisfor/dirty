@@ -16,6 +16,8 @@ class TestCommand(Command):
     def run(self):
         import doctest, dirty
         doctest.testmod(dirty)
+        doctest.testmod(dirty.html)
+        doctest.testmod(dirty.xml)
 
 
 setup(

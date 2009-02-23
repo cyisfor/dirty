@@ -4,7 +4,7 @@ Dirty is a simple DSEL template library that helps you to write some HTML
 or XML markup with Python. It is inspired by Markaby.
 
     >>> from dirty.html import *
-    >>> page = html(
+    >>> page = xhtml(
     ...   head(
     ...     title("Dirty"),
     ...     meta(name="Author", content="Hong, MinHee <minhee@dahlia.kr>")
@@ -15,7 +15,10 @@ or XML markup with Python. It is inspired by Markaby.
     ...   )
     ... )
     >>> print(page)    # doctest: +SKIP
-    <html>
+    <!DOCTYPE html PUBLIC
+        "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" />
       <head>
         <title>Dirty</title>
         <meta content="Hong, MinHee &lt;minhee@dahlia.kr&gt;" name="Author" />
@@ -25,6 +28,10 @@ or XML markup with Python. It is inspired by Markaby.
         <p>Dirty is a simple DSEL template library that...</p>
       </body>
     </html>
+
+Output is iterable and evaluated lazily. Such behavior is important and
+useful sometimes e.g. improving slowdown speed, serving big hypertext
+documents. See also the Element.__iter__ method.
 
 """
 
@@ -89,7 +96,7 @@ class Element:
 
         >>> a = Tag("a")
         >>> a("hello", href="hello.html", title="Click me")
-        Tag('a')({'href': 'hello.html', 'title': 'Click me'}, ['hello'])
+        dirty.Tag('a')({'href': 'hello.html', 'title': 'Click me'}, ['hello'])
 
     """
 
@@ -231,8 +238,10 @@ class Element:
 
     def __repr__(self):
         """Representation string."""
-        return "%r(%r, %r)" % (self.tag, self.attributes, self.children)
+        mod = "" if __name__ == "__main__" else __name__ + "."
+        return "%s%r(%r, %r)" % (mod, self.tag, self.attributes, self.children)
 
 
 from . import html
+from . import xml
 
