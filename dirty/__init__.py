@@ -33,6 +33,20 @@ Output is iterable and evaluated lazily. Such behavior is important and
 useful sometimes e.g. improving slowdown speed, serving big hypertext
 documents. See also the Element.__iter__ method.
 
+Use conditional operators or generator expressions if you need if-statement
+or loop.
+
+    >>> members = [{"name": "Hong, MinHee", "admin": True},
+    ...            {"name": "John Doe", "admin": False}]
+    >>> print(ul(
+    ...    li(member["name"], class_="admin" if member["admin"] else "")
+    ...    for member in members
+    ... ))
+    <ul><li class="admin">Hong, MinHee</li><li class="">John Doe</li></ul>
+
+Of course, you can use list comprehensions instead, but it is evaluated
+eagerly. It will make the slowdown speed seem slow.
+
 """
 
 import cgi
