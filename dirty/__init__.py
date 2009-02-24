@@ -213,7 +213,9 @@ class Element:
             for child in self.flat_children:
                 if isinstance(child, str):
                     if self.tag.options.get("cdata_section"):
-                        yield "<![CDATA[%s]]>" % child
+                        yield "<![CDATA["
+                        yield child
+                        yield "]]>"
                     else:
                         yield cgi.escape(child)
                 else:
