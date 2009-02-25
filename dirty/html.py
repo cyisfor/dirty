@@ -1,4 +1,11 @@
-"""HTML tags. Some tags are specialized e.g. xhtml, script."""
+"""HTML tags. Some tags are specialized e.g. xhtml, script, iframe.
+
+    >>> print(iframe(src="dirty.html"))
+    <iframe src="dirty.html"></iframe>
+    >>> print(textarea(cols=80, rows=5, name="body"))
+    <textarea rows="5" name="body" cols="80"></textarea>
+
+"""
 
 from . import Tag, Element
 
@@ -7,13 +14,12 @@ TAG_NAMES = ["a", "abbr", "acronym", "address", "applet", "area", "b", "base",
              "caption", "center", "cite", "code", "col", "colgroup", "dd",
              "del_", "dfn", "dir", "div", "dl", "dt", "em", "fieldset", "font",
              "form", "frame", "frameset", "h1", "h2", "h3", "h4", "h5", "h6",
-             "head", "hr", "html", "i", "iframe", "img", "input", "ins",
-             "isindex", "kbd", "label", "legend", "li", "link", "map", "menu",
-             "meta", "noframes", "noscript", "object", "ol", "optgroup",
-             "option", "param", "p", "pre", "q", "s", "samp", "select", "small",
-             "span", "strike", "strong", "style", "sub", "sup", "table",
-             "tbody", "td", "textarea", "tfoot", "th", "thead", "title", "tr",
-             "tt", "u", "ul", "var", "xmp"]
+             "head", "hr", "html", "i", "img", "input", "ins", "isindex", "kbd",
+             "label", "legend", "li", "link", "map", "menu", "meta", "noframes",
+             "noscript", "object", "ol", "optgroup", "option", "param", "p",
+             "pre", "q", "s", "samp", "select", "small", "span", "strike",
+             "strong", "style", "sub", "sup", "table", "tbody", "td", "tfoot",
+             "th", "thead", "title", "tr", "tt", "u", "ul", "var", "xmp"]
 
 
 class xhtml(Element):
@@ -75,3 +81,7 @@ class script(Element):
 
 for _html_tag in TAG_NAMES:
     globals()[_html_tag] = Tag(_html_tag)
+
+textarea = Tag("textarea", shorten_empty_tag=False, cdata_section=True)
+iframe = Tag("iframe", shorten_empty_tag=False, cdata_section=True)
+
