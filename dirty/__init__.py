@@ -147,6 +147,15 @@ class Element:
             >>> str(el)
             '<p class="css class">text.</p>'
 
+        None objects are ignored in attributes or children.
+
+            >>> print(Element(Tag("p"), "No class.", class_=None))
+            <p>No class.</p>
+            >>> Element(Tag("p"), {"class": None})
+            dirty.Tag('p')()
+            >>> print(Element(Tag("p"), "a", None, "b", None))
+            <p>ab</p>
+
         """
         self.children = list(c for c in children if not isinstance(c, dict))
         try:
@@ -160,14 +169,15 @@ class Element:
             if isinstance(c, dict):
                 attributes.update(c)
         self.attributes = dict((name.strip("_").replace("_", "-"), value)
-                               for name, value in attributes.items())
+                               for name, value in attributes.items()
+                               if value is not None)
 
     @property
     def flat_children(self, seq=None):
         for child in (seq or self.children):
             if isinstance(child, (str, Element)):
                 yield child
-            else:
+            elif child is not None:
                 for part in Element.flat_children.fget(self, child):
                     yield part
 
@@ -255,7 +265,15 @@ class Element:
     def __repr__(self):
         """Representation string."""
         mod = "" if __name__ == "__main__" else __name__ + "."
-        return "%s%r(%r, %r)" % (mod, self.tag, self.attributes, self.children)
+        tag, attrs, children = self.tag, self.attributes, self.children
+        if attrs and children:
+            return "%s%r(%r, %r)" % (mod, tag, attrs, children)
+        elif attrs:
+            return "%s%r(%r)" % (mod, tag, attrs)
+        elif children:
+            return "%s%r(%r)" % (mod, tag, children)
+        else:
+            return "%s%r()" % (mod, tag)
 
 
 from . import html
