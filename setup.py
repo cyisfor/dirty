@@ -23,7 +23,7 @@ class TestCommand(Command):
 setup(
     name="dirty",
     version="1.0.1",
-    description="A dirty and simple HTML/XML template engine for Python 3.0",
+    description="A dirty and simple HTML/XML template engine for Python 3.0.",
     author="Hong, MinHee",
     author_email="minhee@dahlia.kr",
     url="http://dirty.googlecode.com/",
