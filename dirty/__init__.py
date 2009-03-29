@@ -63,9 +63,62 @@ or loop.
 Of course, you can use list comprehensions instead, but it is evaluated
 eagerly. It will make the slowdown speed seem slow.
 
+You can write raw XML/HTML strings also with RawString. It puts strings
+transparently without any touching.
+
+    >>> from dirty import RawString
+    >>> print(div(RawString('<a href="http://dahlia.kr/">My homepage.</a>')))
+    <div><a href="http://dahlia.kr/">My homepage.</a></div>
+
 """
 
 import cgi
+
+
+class RawString:
+    """Raw XML/HTML string. It does not escape any characters e.g. double
+    quotation marks, ampersands.
+
+        >>> print(RawString("<em>It has a ", "raw HTML string.</em>"))
+        <em>It has a raw HTML string.</em>
+        >>> div = Tag("div")
+        >>> print(div(RawString('<a href="http://dahlia.kr/">Hello</a>')))
+        <div><a href="http://dahlia.kr/">Hello</a></div>
+
+    """
+
+    def __init__(self, *raw_strings):
+        """Creates an raw string. Accepts one or more strings as arguments."""
+        self.raw_strings = raw_strings
+
+    def __iter__(self):
+        """Returns an iterator which contains a raw string.
+
+            >>> list(RawString("<em>It has a", " raw HTML string.", "</em>"))
+            ['<em>It has a', ' raw HTML string.', '</em>']
+
+        """
+        return iter(self.raw_strings)
+
+    def __str__(self):
+        """To string.
+
+            >>> str(RawString("<em>It has a ", "raw HTML string.</em>"))
+            '<em>It has a raw HTML string.</em>'
+
+        """
+        return "".join(self.raw_strings)
+
+    def __repr__(self):
+        """Representation string.
+
+            >>> RawString("<em>It has a ", "raw HTML string.</em>")
+            RawString('<em>It has a ', 'raw HTML string.</em>')
+            >>> RawString("text")
+            RawString('text',)
+
+        """
+        return "RawString%r" % (self.raw_strings,)
 
 
 class Tag:
@@ -120,7 +173,7 @@ class Tag:
         return "Tag(%r)" % self.name
 
 
-class Element:
+class Element(RawString):
     """HTML and XML element. In order to create a new element, call the tag
     instance.
 
@@ -191,7 +244,7 @@ class Element:
     @property
     def flat_children(self, seq=None):
         for child in (seq or self.children):
-            if isinstance(child, (str, Element)):
+            if isinstance(child, (str, RawString)):
                 yield child
             elif child is not None:
                 for part in Element.flat_children.fget(self, child):
