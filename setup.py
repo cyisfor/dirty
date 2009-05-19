@@ -37,7 +37,7 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: "
-            "GNU Library or Lesser General Public License (LGPL)"
+            "GNU Library or Lesser General Public License (LGPL)",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: "
