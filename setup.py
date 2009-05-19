@@ -23,12 +23,28 @@ class TestCommand(Command):
 setup(
     name="dirty",
     version="1.0.2",
-    description="A dirty and simple HTML/XML template engine for Python 3.0.",
+    description="A dirty and simple HTML/XML template engine for Python 3.",
+    long_description="Dirty is a simple internal DSL template library that"
+                     "helps you to write some HTML or XML markup with Python."
+                     "It is inspired by Markaby.",
     author="Hong, MinHee",
     author_email="minhee@dahlia.kr",
     url="http://dirty.googlecode.com/",
     packages=["dirty"],
     package_dir=dict(dirty="dirty"),
-    cmdclass=dict(test=TestCommand)
+    cmdclass=dict(test=TestCommand),
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: "
+            "GNU Library or Lesser General Public License (LGPL)"
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: "
+            "CGI Tools/Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Text Processing :: Markup :: HTML",
+        "Topic :: Text Processing :: Markup :: XML"
+    ]
 )
 
